@@ -31,30 +31,11 @@ pub(crate) fn generate_acc<T>(keys: &[&str]) -> HashMap<String, Vec<T>> {
 /// ```
 ///
 /// WARN: returns a **new** [`Vec`]. 
-fn merge_vals_to_vec(map: &HashMap<String, Vec<Ident>>, key1: &str, key2: &str) -> Vec<Ident> {
+pub(crate) fn merge_vals_to_vec(map: &HashMap<String, Vec<Ident>>, key1: &str, key2: &str) -> Vec<Ident> {
     let mut first = map.get(key1).cloned().unwrap_or_else(Vec::new);
     let second = map.get(key2).cloned().unwrap_or_else(Vec::new);
 
     first.extend(second);
 
     first
-}
-
-/// Unpacks children derives from HashMap.
-///
-/// Examle:
-/// ```
-/// let map = HashMap::from([("scheme", vec![PartialEq]), ("dto", vec![Eq]), ("entity", vec![Debug]) ]);
-/// let (
-///     scheme, // [PartialEq]
-///     dto,    // [Eq]
-///     entity, // [Debug]
-/// ) = unpack_derives(&map);
-/// ```
-pub(crate) fn unpack_derives(derives: &HashMap<String, Vec<Ident>>) -> (Vec<Ident>, Vec<Ident>, Vec<Ident>) {
-    (
-        merge_vals_to_vec(derives, "all", "scheme"),
-        merge_vals_to_vec(derives, "all", "dto"),
-        merge_vals_to_vec(derives, "all", "entity"),
-    )
 }

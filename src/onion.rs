@@ -3,7 +3,7 @@
 use std::collections::HashMap;
 use proc_macro2::{Span, TokenStream, TokenTree};
 use syn::{punctuated::Punctuated, spanned::Spanned, Attribute, DataStruct, DeriveInput, Field, Fields, Ident, Meta, Token};
-use crate::utils::{generate_acc, unpack_derives};
+use crate::utils::{generate_acc, merge_vals_to_vec};
 
 /// Returns children structs.
 pub(crate) fn onionpack_impl(input: &DeriveInput) -> TokenStream {
@@ -34,7 +34,11 @@ pub(crate) fn onionpack_impl(input: &DeriveInput) -> TokenStream {
         scheme_derives,
         dto_derives,
         entity_derives,
-    ) = unpack_derives(&derives);
+    ) = (
+        merge_vals_to_vec(&derives, "all", "scheme"),
+        merge_vals_to_vec(&derives, "all", "dto"),
+        merge_vals_to_vec(&derives, "all", "entity"),
+    );
     
     quote::quote! {
         #[derive( #(#scheme_derives),* )]
