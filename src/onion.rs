@@ -8,16 +8,13 @@ use crate::utils::{generate_acc, merge_vals_to_vec};
 /// Returns children structs.
 pub(crate) fn onionpack_impl(input: &DeriveInput) -> TokenStream {
     let fields = match input.data {
-        // WARN: clone().
         syn::Data::Struct(DataStruct { ref fields, .. }) => fields,
         _ => return generate_error(input.ident.span(), "`OnionPack` works only with structs."),
     };
 
-    let (
-        scheme_ident,
-        dto_ident,
-        entity_ident,
-    ) = generate_struct_idents(&input.ident);
+    let scheme_ident = quote::format_ident!("{}Scheme", &input.ident);
+    let dto_ident = quote::format_ident!("{}Dto", &input.ident);
+    let entity_ident = quote::format_ident!("{}Entity", input.ident);
     
     let hehe = unpack_fields(fields);
 
@@ -50,17 +47,6 @@ pub(crate) fn onionpack_impl(input: &DeriveInput) -> TokenStream {
             #(#entity_fields),*
         }
     }
-}
-
-/// Generates children struct idents.
-///
-/// `(<Name>Scheme, <Name>Dto, <Name>Entity)`.
-fn generate_struct_idents(ident: &Ident) -> (Ident, Ident, Ident) {
-    (
-        quote::format_ident!("{}Scheme", ident),
-        quote::format_ident!("{}Dto", ident),
-        quote::format_ident!("{}Entity", ident),
-    )
 }
 
 /// Iterates over fields and collects them to the distinct children list.
