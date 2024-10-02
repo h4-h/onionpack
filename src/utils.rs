@@ -29,16 +29,15 @@ pub(crate) fn generate_acc<T>(keys: &[&str]) -> HashMap<String, Vec<T>> {
 /// let result = merge_sets_to_vec(&map, "all", "dto"); // second += first
 /// println!("{result:?}") // [PartialEq, Eq, Debug]
 /// ```
+///
+/// WARN: returns a **new** [`Vec`]. 
 fn merge_sets_to_vec(map: &HashMap<String, Vec<Ident>>, key1: &str, key2: &str) -> Vec<Ident> {
-    let mut result: Vec<Ident> = map.get(key1).unwrap().clone();
+    let mut first = map.get(key1).cloned().unwrap_or_else(Vec::new);
+    let second = map.get(key2).cloned().unwrap_or_else(Vec::new);
 
-    if let Some(set) = map.get(key2) {
-        // WARN: Realloc here: `cloned()`.
-        //       Maybe not that bad and it clones only iter...
-        result.extend(set.iter().cloned());
-    }
+    first.extend(second);
 
-    result.into_iter().collect()
+    first
 }
 
 /// Unpacks children derives from HashMap.
