@@ -94,10 +94,8 @@ fn unpack_fields(fields: &Fields) -> HashMap<String, Vec<Field>> {
                 if let Some(arg_path) = arg.get_ident().map(|id| id.to_string()) {
                     let mut new_field = field.clone();
                     new_field.attrs.retain(|a| !a.path().is_ident("onion_dist"));
-
                     let _ = acc.get_mut(&arg_path).map(|fv| { fv.push(new_field); });
-                };
-
+                }
             }
         }
     }
