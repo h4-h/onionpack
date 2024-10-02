@@ -30,15 +30,9 @@ pub(crate) fn onionpack_impl(input: &DeriveInput) -> TokenStream {
         Err(err) => return err,
     };
 
-    let (
-        scheme_derives,
-        dto_derives,
-        entity_derives,
-    ) = (
-        merge_vals_to_vec(&derives, "all", "scheme"),
-        merge_vals_to_vec(&derives, "all", "dto"),
-        merge_vals_to_vec(&derives, "all", "entity"),
-    );
+    let scheme_derives = merge_vals_to_vec(&derives, "all", "scheme");
+    let dto_derives = merge_vals_to_vec(&derives, "all", "dto");
+    let entity_derives = merge_vals_to_vec(&derives, "all", "entity");
     
     quote::quote! {
         #[derive( #(#scheme_derives),* )]
