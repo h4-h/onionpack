@@ -59,11 +59,12 @@ pub(crate) fn onionpack_impl(input: &DeriveInput) -> TokenStream {
 ///     Field { name: y, type: i32, attrs: [] }
 ///     Field { name: z, type: String, attrs: [onion_dist(none)]}
 /// ];
-/// let (
-///     scheme, // [Field.name = x]
-///     dto,    // [Field.name = x, Field.name = y]
-///     entity, // [Field.name = x]
-/// ) = unpack_fields(&fields);
+///
+/// let fields = unpack_fields(&fields);
+///
+/// // fields.scheme = [Field.name = x]
+/// // fields.dto = [Field.name = x, Field.name = y]
+/// // fields.entty = [Field.name = x]
 /// ```
 ///
 /// As you can see without `onion_dist` field distributes to all children structs.
