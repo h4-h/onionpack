@@ -21,12 +21,12 @@ pub(crate) fn generate_acc<T>(keys: &[&str]) -> HashMap<String, Vec<T>> {
     acc
 }
 
-/// Merges set by `key2` with set by `key1`.
+/// Merges value by `key2` with value by `key1`.
 ///
 /// Example:
 /// ```
 /// let map = HashMap::from([("all", vec![PartialEq, Eq]), ("dto", vec![Debug])]);
-/// let result = merge_sets_to_vec(&map, "all", "dto"); // second += first
+/// let result = merge_vals_to_vec(&map, "all", "dto"); // second += first
 /// println!("{result:?}") // [PartialEq, Eq, Debug]
 /// ```
 ///
